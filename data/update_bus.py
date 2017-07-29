@@ -28,7 +28,8 @@ def update_bus():
 
             trip_to_bus[trip_id] = [bus_number, bus_heading]
 
-        with open('bus_numbers.pickle', 'wb') as handle:
-            pickle.dump(trip_to_bus, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        with open('routes.pickle', 'wb') as handle:
+            pickle.dump(trip_to_bus, handle, protocol=0)
 
+update_bus()
 
