@@ -17,18 +17,27 @@ def getLiveData():
     for entity in feed.entity:
         if entity.HasField("vehicle"):
             trip_number = entity.vehicle.trip.trip_id
+            # sometimes the live bus trip ids don't show up in the routes database
+            if trip_number not in routes:
+                print(trip_number + " missing")
+                continue
+
             bus_number, bus_title = routes[trip_number]
             vehicle = entity.vehicle.vehicle.id
             # if the label exists, get the higher of the two
             # sometimes the label is wrong but sometimes its correct
             if entity.vehicle.vehicle.label:
-                vehicle = max(entity.vehicle.vehicle.id, entity.vehicle.vehicle.label)
+                vehicle = max(int(entity.vehicle.vehicle.id), int(entity.vehicle.vehicle.label))
             latitude = entity.vehicle.position.latitude
             longitude = entity.vehicle.position.longitude
             bearing = entity.vehicle.position.bearing
 
-            vehicle_data = {"bus_number":bus_number, "bus_title":bus_title,"latitude":latitude, "longitude":longitude, "bearing":bearing}
-            print(entity)
+            vehicle_data = {"bus_number":bus_number, 
+                            "bus_title":bus_title,
+                            "latitude":latitude, 
+                            "longitude":longitude, 
+                            "bearing":bearing}
+            # print(entity)
             transit_data[vehicle] = vehicle_data
 
     return(transit_data)

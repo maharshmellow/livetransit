@@ -31,14 +31,25 @@ function initMap() {
         });
     });
 
-    addMarker({
-        lat: 53.526111,
-        lng: -113.495111
-    }, tooltip = "asdf");
-    addMarker({
-        lat: 53.519111,
-        lng: -113.495111
-    }, tooltip = "asdsdff");
+    // addMarker({
+    //     lat: 53.526111,
+    //     lng: -113.495111
+    // }, tooltip = "asdf");
+    // addMarker({
+    //     lat: 53.519111,
+    //     lng: -113.495111
+    // }, tooltip = "asdsdff");
+
+    // setTimeout(executeQuery, 5000);
+
+    $.ajax({
+        url: '/api/data',
+        success: function(data) {
+            console.log(data);
+            // do something with the return value here if you like
+        }
+    });
+
 }
 
 // Adds a marker to the map and push to the array.
