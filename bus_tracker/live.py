@@ -19,6 +19,10 @@ def getLiveData():
             trip_number = entity.vehicle.trip.trip_id
             bus_number, bus_title = routes[trip_number]
             vehicle = entity.vehicle.vehicle.id
+            # if the label exists, get the higher of the two
+            # sometimes the label is wrong but sometimes its correct
+            if entity.vehicle.vehicle.label:
+                vehicle = max(entity.vehicle.vehicle.id, entity.vehicle.vehicle.label)
             latitude = entity.vehicle.position.latitude
             longitude = entity.vehicle.position.longitude
             bearing = entity.vehicle.position.bearing
