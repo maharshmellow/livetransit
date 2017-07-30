@@ -1,3 +1,97 @@
+body {
+    margin: 0;
+}
+
+#marker-tooltip {
+    display: none;
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    background-color: white;
+    margin: 15px;
+    box-shadow: 0px 0px 50px #888888;
+    border: 0;
+    padding: 15px;
+}
+
+#header {
+    width: 100%;
+    background-color: white;
+    height: 5vh;
+}
+
+#footer {
+    position: absolute;
+    width: 100%;
+    background-color: red;
+    height: 2vh;
+    bottom: 0px;
+}
+
+#map {
+    height: 93vh;
+    position: relative;
+    width: 100%;
+}
+
+.maps-frame {
+    height: 95vh;
+    width: 100%;
+}
+
+.kd-tabbed-vert.header-links .kd-tabbutton a {
+    color: #757575;
+    display: inline-block;
+    height: 100%;
+    padding: 0 24px;
+    width: 100%;
+}
+
+.kd-tabbed-vert.header-links .kd-tabbutton {
+    padding: 0;
+}
+
+.kd-tabbed-vert.header-links .kd-tabbutton.selected a {
+    color: #03a9f4;
+}
+
+.kd-tabbed-vert.header-links .kd-tabbutton a:focus {
+    text-decoration: none;
+}
+
+p.top-desc {
+    padding: 1em 1em .1em 1em;
+}
+
+p.bottom-desc {
+    padding: 0em 1em 1em 1em;
+}
+
+.map-control {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
+    font-family: 'Roboto', 'sans-serif';
+    margin: 10px;
+    /* Hide the control initially, to prevent it from appearing
+           before the map loads. */
+    display: none;
+}
+
+
+/* Display the control once it is inside the map. */
+
+#map .map-control {
+    display: block;
+}
+
+.selector-control {
+    font-size: 14px;
+    line-height: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 .undraggable {
     user-drag: none;
     user-select: none;
