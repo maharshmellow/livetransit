@@ -4,6 +4,7 @@
        customizations you can apply with map styling. -->
 
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- This stylesheet contains specific styles for displaying the map
          on this page. Replace it with your own styles as described in the
          documentation:
@@ -12,18 +13,33 @@
     body {
         margin: 0;
     }
-    #header{;
+    
+    #marker-tooltip {
+        display: none;
+        position: absolute;
+        width: 200px;
+        height: 100px;
+        background-color: white;
+        margin: 15px;
+        box-shadow: 0px 0px 50px #888888;
+        border: 0;
+        padding: 15px;
+    }
+    
+    #header {
         width: 100%;
         background-color: white;
         height: 5vh;
     }
-    #footer{
+    
+    #footer {
         position: absolute;
         width: 100%;
         background-color: red;
         height: 2vh;
         bottom: 0px;
     }
+    
     #map {
         height: 93vh;
         position: relative;
@@ -92,7 +108,6 @@
     <div id="header">
         Header
     </div>
-
     <div id="style-selector-control" class="map-control">
         <select id="style-selector" class="selector-control">
             <option value="default" selected="selected">Default</option>
@@ -102,11 +117,13 @@
         </select>
     </div>
     <div id="map"></div>
+    <div id="marker-tooltip"></div>
     <div id="footer">
         Footer
     </div>
     <script>
     var map;
+    var markers = [];
 
     function initMap() {
         // Create the map with no initial style specified.
@@ -130,13 +147,80 @@
             styles: styles[styleSelector.value]
         });
 
+
         // Apply new JSON when the user selects a different style.
         styleSelector.addEventListener('change', function() {
             map.setOptions({
                 styles: styles[styleSelector.value]
             });
         });
+
+        addMarker({
+            lat: 53.526111,
+            lng: -113.495111
+        }, tooltip = "asdf");
+        addMarker({
+            lat: 53.519111,
+            lng: -113.495111
+        }, tooltip = "asdsdff");
     }
+
+    // Adds a marker to the map and push to the array.
+    function addMarker(location, tooltip) {
+        var marker = new google.maps.Marker({
+            position: location,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 7,
+            },
+            map: map
+        });
+        marker.tooltipContent = tooltip;
+
+        marker.addListener('mouseover', function() {
+            var point = fromLatLngToPoint(marker.getPosition(), map);
+            $('#marker-tooltip').html(marker.tooltipContent).css({
+                'left': point.x,
+                'top': point.y + 40
+            }).show();
+        });
+
+        marker.addListener('mouseout', function() {
+            $('#marker-tooltip').hide();
+        });
+        markers.push(marker);
+    }
+    // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
+    // Removes the markers from the map, but keeps them in the array.
+    function clearMarkers() {
+        setMapOnAll(null);
+    }
+
+    // Shows any markers currently in the array.
+    function showMarkers() {
+        setMapOnAll(map);
+    }
+
+    // Deletes all markers in the array by removing references to them.
+    function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+    }
+
+    function fromLatLngToPoint(latLng, map) {
+        var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
+        var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
+        var scale = Math.pow(2, map.getZoom());
+        var worldPoint = map.getProjection().fromLatLngToPoint(latLng);
+        return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+    }
+
+
 
     var styles = {
         default: null,

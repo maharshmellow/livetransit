@@ -14,7 +14,7 @@ def index():
     return("Hello Worlds")
 
 @app.route("/api/data", methods=["GET"])
-@limiter.limit("300/minute")
+@limiter.limit("300/min")
 def data():
     return jsonify(getLiveData())
 
