@@ -16,7 +16,9 @@ def index():
 @app.route("/api/data", methods=["GET"])
 @limiter.limit("300/min")
 def data():
-    return jsonify(getLiveData())
+    response = jsonify(getLiveData())
+    response.cache_control.max_age = 1
+    return response
 
 @app.route("/test")
 def test():

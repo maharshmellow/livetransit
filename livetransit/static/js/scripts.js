@@ -44,8 +44,16 @@ function initMap() {
 
     $.ajax({
         url: '/api/data',
-        success: function(data) {
-            console.log(data);
+        success: function(response) {
+            console.log(response);
+            // draw the marker for each of the vehicles
+            for (vehicle in response){
+                console.log(vehicle);
+                console.log(response[vehicle].latitude)
+
+                addMarker({lat:parseFloat(response[vehicle].latitude), lng:parseFloat(response[vehicle].longitude)}, tooltip=response[vehicle].bus_number);
+            }
+
             // do something with the return value here if you like
         }
     });
