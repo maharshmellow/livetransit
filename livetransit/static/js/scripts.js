@@ -1,5 +1,6 @@
 var map;
 var markers = [];
+var temp_markers = [];
 
 function initMap() {
     // Create the map with no initial style specified.
@@ -41,11 +42,19 @@ function initMap() {
     // }, tooltip = "asdsdff");
 
     // setTimeout(executeQuery, 5000);
+    refreshMap();
+    
 
+}
+
+function refreshMap(){
     $.ajax({
         url: '/api/data',
         success: function(response) {
             console.log(response);
+            // clear the current markers 
+            deleteMarkers();
+
             // draw the marker for each of the vehicles
             for (vehicle in response){
                 console.log(vehicle);
@@ -57,7 +66,8 @@ function initMap() {
             // do something with the return value here if you like
         }
     });
-
+    // run the function every 5 seconds
+    setTimeout(refreshMap, 5000);
 }
 
 // Adds a marker to the map and push to the array.
