@@ -2,10 +2,10 @@ from google.transit import gtfs_realtime_pb2
 import requests
 import pickle
 
-with open("data/routes.pickle", "rb") as handle:
-    routes = pickle.load(handle)
-
 def getLiveData():
+
+    with open("data/routes.pickle", "rb") as handle:
+        routes = pickle.load(handle)
 
     live_data_url = "https://data.edmonton.ca/download/7qed-k2fc/application%2Foctet-stream"
 
@@ -13,6 +13,7 @@ def getLiveData():
     response = requests.get(live_data_url)
     feed.ParseFromString(response.content)
 
+    transit_data = {}       # contains the informtion for all the busses
     for entity in feed.entity:
         if entity.HasField("vehicle"):
             trip_number = entity.vehicle.trip.trip_id
@@ -22,9 +23,8 @@ def getLiveData():
             longitude = entity.vehicle.position.longitude
             bearing = entity.vehicle.position.bearing
 
-            vehicle_data = {"bus_number":bus_number, "bus_title":bus_title, "vehicle":vehicle, "latitude":latitude, "longitude":longitude, "bearing":bearing}
+            vehicle_data = {"bus_number":bus_number, "bus_title":bus_title,"latitude":latitude, "longitude":longitude, "bearing":bearing}
+            print(entity)
+            transit_data[vehicle] = vehicle_data
 
-            print(vehicle_data)
-
-
-getLiveData()
+    return(transit_data)
