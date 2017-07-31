@@ -11,6 +11,7 @@ function initMap() {
             lng: -113.495
         },
         zoom: 12,
+        streetViewControl: false,
         mapTypeControl: false
     });
 
@@ -32,16 +33,6 @@ function initMap() {
         });
     });
 
-    // addMarker({
-    //     lat: 53.526111,
-    //     lng: -113.495111
-    // }, tooltip = "asdf");
-    // addMarker({
-    //     lat: 53.519111,
-    //     lng: -113.495111
-    // }, tooltip = "asdsdff");
-
-    // setTimeout(executeQuery, 5000);
     refreshMap();
     
 
@@ -57,27 +48,22 @@ function refreshMap(){
 
             // draw the marker for each of the vehicles
             for (vehicle in response){
-                console.log(vehicle);
-                console.log(response[vehicle].latitude)
-
                 addMarker({lat:parseFloat(response[vehicle].latitude), lng:parseFloat(response[vehicle].longitude)}, tooltip=response[vehicle].bus_number);
             }
-
-            // do something with the return value here if you like
         }
     });
-    // run the function every 5 seconds
-    setTimeout(refreshMap, 5000);
+    setTimeout(refreshMap, 15000);
 }
 
 // Adds a marker to the map and push to the array.
 function addMarker(location, tooltip) {
     var marker = new google.maps.Marker({
         position: location,
-        icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 7,
-        },
+        // icon: {
+        //     path: google.maps.SymbolPath.CIRCLE,
+        //     scale: 7,
+        // },
+        icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
         map: map
     });
     marker.tooltipContent = tooltip;

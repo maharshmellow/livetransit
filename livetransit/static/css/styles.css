@@ -16,20 +16,33 @@ body {
 
 #header {
     width: 100%;
-    background-color: white;
-    height: 5vh;
+    background-color: #332E4D;
+    height: 6vh;
+    border-bottom: 4px #6F06FB solid;
+    color: white;
+    font-family: "Brandon Grotesque";
+    font-weight: 500;
+    font-size: 16px;
+}
+#city{
+
+    font-weight: 100;
+    border-left: 2px red solid;
+    margin: 10px;
+    padding-left: 10px;
+    padding-top: 30px;
 }
 
 #footer {
     position: absolute;
     width: 100%;
-    background-color: red;
+    background-color: blue;
     height: 2vh;
     bottom: 0px;
 }
 
 #map {
-    height: 93vh;
+    height: 92vh;
     position: relative;
     width: 100%;
 }
