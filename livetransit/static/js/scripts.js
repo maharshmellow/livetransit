@@ -48,7 +48,7 @@ function refreshMap(){
 
             // draw the marker for each of the vehicles
             for (vehicle in response){
-                addMarker({lat:parseFloat(response[vehicle].latitude), lng:parseFloat(response[vehicle].longitude)}, tooltip=response[vehicle].bus_number);
+                addMarker({lat:parseFloat(response[vehicle].latitude), lng:parseFloat(response[vehicle].longitude)}, vehicle=response[vehicle]);
             }
         }
     });
@@ -56,7 +56,7 @@ function refreshMap(){
 }
 
 // Adds a marker to the map and push to the array.
-function addMarker(location, tooltip) {
+function addMarker(location, vehicle) {
     var marker = new google.maps.Marker({
         position: location,
         // icon: {
@@ -65,12 +65,11 @@ function addMarker(location, tooltip) {
         // },
         // icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
         icon:{
-            url: 'data:image/svg+xml;utf-8,<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="Artboard-3"><circle id="Oval-2" fill="#6F06FB" cx="11" cy="11" r="11"></circle><text id="333" font-family="BrandonGrotesque-Black, Brandon Grotesque" font-size="9.19999981" font-weight="700" letter-spacing="0.239999995" fill="#FFFFFF"><tspan x="3.49213443" y="14">333</tspan></text></g></g></svg>'
-
+            url: getIcon(vehicle.bus_number),
         },
         map: map
     });
-    marker.tooltipContent = tooltip;
+    marker.tooltipContent = vehicle.bus_number;
 
     marker.addListener('mouseover', function() {
         var point = fromLatLngToPoint(marker.getPosition(), map);
@@ -115,6 +114,11 @@ function fromLatLngToPoint(latLng, map) {
     return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
 }
 
+function getIcon(bus_number){
+    var icon = 'data:image/svg+xml;utf-8,<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="Artboard-3"><circle id="Oval-2" fill="#6F06FB" cx="11" cy="11" r="11"></circle><text font-family="FiraCode-Bold, Fira Code" font-size="11" font-weight="bold" letter-spacing="-0.910000026" fill="#FFFFFF"><tspan x="11" y="15" text-anchor="middle">' + bus_number + '</tspan></text></g></g></svg>';
+
+    return icon;
+}
 
 
 var styles = {

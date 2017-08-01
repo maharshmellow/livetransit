@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="22px" viewBox="0 0 21 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
+    <title>Artboard 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-2">
+            <g id="Group">
+                <polygon id="Triangle" fill="#6F06FB" points="10.5218675 0.837097497 17.3619785 5.71755615 3.65504456 5.69294312"></polygon>
+                <ellipse id="Oval" fill="#6F06FB" cx="10.4865778" cy="12.5198278" rx="10.4865778" ry="9.01011455"></ellipse>
+                <text id="333" font-family="BrandonGrotesque-Medium, Brandon Grotesque" font-size="9.19999981" font-weight="400" letter-spacing="-0.358800054" fill="#FFFFFF">
+                    <tspan x="3.65133289" y="16.16">333</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
