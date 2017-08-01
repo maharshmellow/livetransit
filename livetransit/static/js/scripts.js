@@ -63,7 +63,11 @@ function addMarker(location, tooltip) {
         //     path: google.maps.SymbolPath.CIRCLE,
         //     scale: 7,
         // },
-        icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+        // icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+        icon:{
+            url: 'data:image/svg+xml;utf-8,<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="Artboard-3"><circle id="Oval-2" fill="#6F06FB" cx="11" cy="11" r="11"></circle><text id="333" font-family="BrandonGrotesque-Black, Brandon Grotesque" font-size="9.19999981" font-weight="700" letter-spacing="0.239999995" fill="#FFFFFF"><tspan x="3.49213443" y="14">333</tspan></text></g></g></svg>'
+
+        },
         map: map
     });
     marker.tooltipContent = tooltip;

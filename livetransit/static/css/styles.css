@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    overflow: hidden;
 }
 
 #marker-tooltip {
@@ -39,11 +40,21 @@ body {
 #footer {
     position: absolute;
     width: 100%;
-    background-color: blue;
     height: 2vh;
+    line-height: 2vh;
+    vertical-align: middle;
+    background-color: #6F06FB;
     bottom: 0px;
+    color: white;
+    text-align: center;
+    font-family: "Brandon Grotesque";
+    font-weight: 300;
+    font-size: 11px;
 }
-
+a{
+    color: white;
+    text-decoration: none;
+}
 #map {
     height: 92vh;
     position: relative;
