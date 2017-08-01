@@ -41,3 +41,30 @@ def getLiveData():
             transit_data[vehicle] = vehicle_data
 
     return(transit_data)
+
+
+def getBusStops():
+
+    url = "https://data.edmonton.ca/resource/kgzg-mxv6.json"
+
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        print(data)
+
+
+    return("1")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
