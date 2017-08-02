@@ -5,6 +5,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask import render_template
 import time
+
 app = Flask(__name__)
 limiter = Limiter(app, key_func=get_remote_address)
 
@@ -33,3 +34,5 @@ def bus_stops():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# TODO NOTE
