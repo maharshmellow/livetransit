@@ -1,4 +1,4 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, request
 from flask import jsonify
 from live import *
 from flask_limiter import Limiter
@@ -23,11 +23,13 @@ def data():
 @app.route("/test")
 def test():
     return render_template("home.html")
-@app.route("/busstops")
+@app.route("/trip")
 def bus_stops():
-    response = getBusStops()
+    trip_id = request.args.get("id")
+    response = getTrip(trip_id)
     return response
     # return(url_for("static", filename="css/styles.css"))
+
 
 if __name__ == "__main__":
     app.run(debug=True)

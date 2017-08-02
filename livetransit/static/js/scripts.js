@@ -32,13 +32,13 @@ function initMap() {
             styles: styles[styleSelector.value]
         });
     });
-
-    refreshMap();
     
+    refreshMap();
+
 
 }
 
-function refreshMap(){
+function refreshMap() {
     $.ajax({
         url: '/api/data',
         success: function(response) {
@@ -47,8 +47,8 @@ function refreshMap(){
             deleteMarkers();
 
             // draw the marker for each of the vehicles
-            for (vehicle in response){
-                addMarker({lat:parseFloat(response[vehicle].latitude), lng:parseFloat(response[vehicle].longitude)}, vehicle=response[vehicle]);
+            for (vehicle in response) {
+                addMarker({ lat: parseFloat(response[vehicle].latitude), lng: parseFloat(response[vehicle].longitude) }, vehicle = response[vehicle]);
             }
         }
     });
@@ -64,7 +64,7 @@ function addMarker(location, vehicle) {
         //     scale: 7,
         // },
         // icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
-        icon:{
+        icon: {
             url: getIcon(vehicle.bus_number),
         },
         map: map
@@ -114,10 +114,47 @@ function fromLatLngToPoint(latLng, map) {
     return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
 }
 
-function getIcon(bus_number){
+function getIcon(bus_number) {
     var icon = 'data:image/svg+xml;utf-8,<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="Artboard-3"><circle id="Oval-2" fill="#6F06FB" cx="11" cy="11" r="11"></circle><text font-family="FiraCode-Bold, Fira Code" font-size="11" font-weight="bold" letter-spacing="-0.910000026" fill="#FFFFFF"><tspan x="11" y="15" text-anchor="middle">' + bus_number + '</tspan></text></g></g></svg>';
 
     return icon;
+}
+
+function drawBusStops() {
+    $.ajax({
+        url: "https://data.edmonton.ca/resource/kgzg-mxv6.json",
+        type: "GET",
+        data: {
+            "$limit": 15000,
+            "$$app_token": "vu8fYnEhfqY4RWYLqE3occS7R"
+        }
+    }).done(function(data) {
+        // console.log(data[0]);
+        for (bus_stop in data){
+        //     console.log(data[bus_stop].stop_lat);
+        
+            //TODO draw the markers here for all the bus stops
+            var marker = new google.maps.Marker({
+
+                position: {lat:parseFloat(data[bus_stop].stop_lat), lng: parseFloat(data[bus_stop].stop_lon)},
+                icon: "static/images/bus_stop.svg",
+                map: map
+            });
+            marker.tooltipContent = data[bus_stop].stop_code+ ": " + data[bus_stop].stop_name;
+
+            marker.addListener('mouseover', function() {
+                var point = fromLatLngToPoint(marker.getPosition(), map);
+                $('#marker-tooltip').html(marker.tooltipContent).css({
+                    'left': point.x,
+                    'top': point.y + 40
+                }).show();
+            });
+
+            marker.addListener('mouseout', function() {
+                $('#marker-tooltip').hide();
+            });
+        }
+    });
 }
 
 
