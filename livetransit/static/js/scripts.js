@@ -32,7 +32,7 @@ function initMap() {
             styles: styles[styleSelector.value]
         });
     });
-    
+
     refreshMap();
 
 
@@ -43,7 +43,7 @@ function refreshMap() {
         url: '/api/data',
         success: function(response) {
             console.log(response);
-            // clear the current markers 
+            // clear the current markers
             deleteMarkers();
 
             // draw the marker for each of the vehicles
@@ -69,7 +69,7 @@ function addMarker(location, vehicle) {
         },
         map: map
     });
-    marker.tooltipContent = vehicle.bus_number;
+    marker.tooltipContent = vehicle.trip_id;
 
     marker.addListener('mouseover', function() {
         var point = fromLatLngToPoint(marker.getPosition(), map);
@@ -132,7 +132,7 @@ function drawBusStops() {
         // console.log(data[0]);
         for (bus_stop in data){
         //     console.log(data[bus_stop].stop_lat);
-        
+
             //TODO draw the markers here for all the bus stops
             var marker = new google.maps.Marker({
 

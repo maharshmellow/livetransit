@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request
+from flask import Flask, url_for, request, redirect
 from flask import jsonify
 from live import *
 from flask_limiter import Limiter
@@ -24,15 +24,18 @@ def data():
 @app.route("/test")
 def test():
     return render_template("home.html")
-@app.route("/trip")
-def bus_stops():
-    trip_id = request.args.get("id")
-    response = getTrip(trip_id)
-    return response
-    # return(url_for("static", filename="css/styles.css"))
 
+@app.route("/trip")
+def trip():
+    trip_id = request.args.get("id")
+    if not trip_id:
+        return redirect("/test", code=302)
+
+    response = getTrip(trip_id)
+    if not response:
+        return redirect("/test", code=302)
+
+    return render_template("trip.html", data=response)
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-# TODO NOTE

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="static/css/styles.css?a=11">
+</head>
+
+<body>
+    <div id="header">
+        <span id="logo">LIVE TRANSIT</span="logo"> <span id="city">EDMONTON</span>
+    </div>
+    <div id="trip_header">
+
+
+    </div>
+    <div id="trip">
+
+
+    </div>
+
+    <div id="footer" class="center-block">
+       <a href="https://www.maharsh.net">Made with ❤ by Maharsh</a>
+    </div>
+</body>
+<script>
+    var response = {{ data|tojson }};
+
+    for (sequence_id in response){
+        console.log(response[sequence_id]);
+        $('#trip').append("<div>"+ response[sequence_id].address +"</div>");
+
+    }
+    // console.log(response);
+</script>
+
+</html>

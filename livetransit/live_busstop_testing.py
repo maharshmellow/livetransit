@@ -1,5 +1,6 @@
 from google.transit import gtfs_realtime_pb2
 import requests
+import datetime
 
 def getTrip(request_trip_id):
 
@@ -18,8 +19,9 @@ def getTrip(request_trip_id):
     if static_stop_response.status_code != 200: return("1")
     static_stop_data = static_stop_response.json()
 
+    trip = {}
 
-    for entity in live_stop_feed.entity: 
+    for entity in live_stop_feed.entity:
         trip_id = entity.trip_update.trip.trip_id
         if trip_id == request_trip_id:
             # iterate through all the bus stops
@@ -30,6 +32,9 @@ def getTrip(request_trip_id):
                 if not time:
                     time = item.arrival.time
 
+                # format the time
+                time = datetime.datetime.fromtimestamp(int(time)).strftime("%H:%M")
+
                 stop_id = item.stop_id
 
                 # get the street address of the bus stop
@@ -39,10 +44,9 @@ def getTrip(request_trip_id):
                         address = stop["stop_name"]
                         break
 
-                print("Sequence: ", stop_sequence)
-                # TODO use the stop sequence to get the ordering on the website correct but don't need to worry about displaying the sequence id
-                print("Time: ", time)
-                print("Stop ID: ", stop_id)
-                print("Address: ", address)
+                trip_item = {"stop":stop_id, "address":address, "time":time}
+                trip[stop_sequence] = trip_item
 
-getTrip("12806461")
+    # print(trip)
+
+# getTrip("12806730")
