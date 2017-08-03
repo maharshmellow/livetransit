@@ -10,7 +10,7 @@ app = Flask(__name__)
 limiter = Limiter(app, key_func=get_remote_address)
 
 @app.route("/")
-@limiter.exempt
+@limiter.exempt("200/hour")
 def index():
     return render_template("home.html")
 
@@ -18,7 +18,6 @@ def index():
 @limiter.limit("200/hour")
 def data():
     response = jsonify(getLiveData())
-    response.cache_control.max_age = 1
     return response
 
 @app.route("/trip")

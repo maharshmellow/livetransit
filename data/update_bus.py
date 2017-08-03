@@ -1,9 +1,9 @@
-# updates the bus headings, bus numbers, and also the trip ids
-
 import requests
 import pickle
 
-def update_bus():
+def update_routes():
+    """updates the bus headings, bus numbers, and also the trip ids"""
+
     trips_url = "https://data.edmonton.ca/api/views/ctwr-tvrd/rows.json?accessType=DOWNLOAD"
     bus_heading_url = "https://data.edmonton.ca/resource/atvz-ppyb.json"
 
@@ -16,12 +16,12 @@ def update_bus():
 
         bus_to_headings = {}
         trip_to_bus = {}
-        a = {}
+
         for heading in headings:
             bus_to_headings[heading["route_id"]] = heading["route_long_name"]
 
         for item in trips["data"]:
-            trip_id = item[-4] 
+            trip_id = item[-4]
             bus_number = item[-6]
             bus_heading = bus_to_headings[bus_number]
             # print(item[-4], item[-6])
@@ -31,5 +31,4 @@ def update_bus():
         with open('routes.pickle', 'wb') as handle:
             pickle.dump(trip_to_bus, handle, protocol=0)
 
-update_bus()
-
+update_routes()
