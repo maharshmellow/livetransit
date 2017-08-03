@@ -59,11 +59,6 @@ function refreshMap() {
 function addMarker(location, vehicle) {
     var marker = new google.maps.Marker({
         position: location,
-        // icon: {
-        //     path: google.maps.SymbolPath.CIRCLE,
-        //     scale: 7,
-        // },
-        // icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
         icon: {
             url: getIcon(vehicle.bus_number),
         },
@@ -71,17 +66,12 @@ function addMarker(location, vehicle) {
     });
     marker.tooltipContent = vehicle.trip_id;
 
-    marker.addListener('mouseover', function() {
-        var point = fromLatLngToPoint(marker.getPosition(), map);
-        $('#marker-tooltip').html(marker.tooltipContent).css({
-            'left': point.x,
-            'top': point.y + 40
-        }).show();
+    marker.addListener('click', function() {
+
+        window.location.replace("/trip?id="+vehicle.trip_id+"&bus="+vehicle.bus_number+"&title="+vehicle.bus_title);
+
     });
 
-    marker.addListener('mouseout', function() {
-        $('#marker-tooltip').hide();
-    });
     markers.push(marker);
 }
 // Sets the map on all markers in the array.
