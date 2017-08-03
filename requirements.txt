@@ -1,2 +1,4 @@
 Flask==0.12.2
-
+gtfs-realtime-bindings==0.0.5
+requests==2.14.2
+gunicorn==19.6.0

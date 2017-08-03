@@ -10,7 +10,7 @@ app = Flask(__name__)
 limiter = Limiter(app, key_func=get_remote_address)
 
 @app.route("/")
-@limiter.exempt("200/hour")
+@limiter.limit("200/hour")
 def index():
     return render_template("home.html")
 
