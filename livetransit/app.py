@@ -28,6 +28,9 @@ def test():
 @app.route("/trip")
 def trip():
     trip_id = request.args.get("id")
+    bus_number = request.args.get("bus")
+    bus_title = request.args.get("title")
+
     if not trip_id:
         return redirect("/test", code=302)
 
@@ -35,7 +38,7 @@ def trip():
     if not response:
         return redirect("/test", code=302)
 
-    return render_template("trip.html", data=response)
+    return render_template("trip.html", bus_number=bus_number, bus_title=bus_title, data=response)
 
 if __name__ == "__main__":
     app.run(debug=True)

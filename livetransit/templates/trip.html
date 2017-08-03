@@ -3,32 +3,44 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="static/css/styles.css?a=11">
+    <link rel="stylesheet" href="static/css/styles.css?a=23">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <div id="header">
         <span id="logo">LIVE TRANSIT</span="logo"> <span id="city">EDMONTON</span>
     </div>
-    <div id="trip_header">
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div id="trip_title" class="center-block text-center">{{ bus_number }} {{ bus_title }}</div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+    <div class="container">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" id="trip"></div>
+        <div class="col-md-2"></div>
 
 
     </div>
-    <div id="trip">
 
-
-    </div>
-
-    <div id="footer" class="center-block">
-       <a href="https://www.maharsh.net">Made with ❤ by Maharsh</a>
-    </div>
+    <!-- <div id="footer1" class="center-block">
+        <a href="https://www.maharsh.net" style="text-decoration: none; color: white;">Made with ❤ by Maharsh</a>
+    </div> -->
 </body>
 <script>
-    var response = {{ data|tojson }};
+    var response = {{ data | tojson }};
 
-    for (sequence_id in response){
+    for (sequence_id in response) {
         console.log(response[sequence_id]);
-        $('#trip').append("<div>"+ response[sequence_id].address +"</div>");
+        var trip_item = "<div class='trip_item row'><div class='col-md-3'>" + response[sequence_id].stop + "</div><div class='col-md-6' >" + response[sequence_id].address + "</div><div class='col-md-3'><span class='pull-right'>" + response[sequence_id].time + "</span></div></div>";
+        $('#trip').append(trip_item);
 
     }
     // console.log(response);
