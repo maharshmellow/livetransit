@@ -15,27 +15,11 @@ function initMap() {
         mapTypeControl: false
     });
 
-    // Add a style-selector control to the map.
-    var styleControl = document.getElementById('style-selector-control');
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(styleControl);
-
-    // Set the map's style to the initial value of the selector.
-    var styleSelector = document.getElementById('style-selector');
     map.setOptions({
-        styles: styles[styleSelector.value]
-    });
-
-
-    // Apply new JSON when the user selects a different style.
-    styleSelector.addEventListener('change', function() {
-        map.setOptions({
-            styles: styles[styleSelector.value]
-        });
+        styles: styles["silver"]
     });
 
     refreshMap();
-
-
 }
 
 function refreshMap() {
@@ -85,11 +69,6 @@ function clearMarkers() {
     setMapOnAll(null);
 }
 
-// Shows any markers currently in the array.
-function showMarkers() {
-    setMapOnAll(map);
-}
-
 // Deletes all markers in the array by removing references to them.
 function deleteMarkers() {
     clearMarkers();
@@ -109,44 +88,6 @@ function getIcon(bus_number) {
 
     return icon;
 }
-
-function drawBusStops() {
-    $.ajax({
-        url: "https://data.edmonton.ca/resource/kgzg-mxv6.json",
-        type: "GET",
-        data: {
-            "$limit": 15000,
-            "$$app_token": "vu8fYnEhfqY4RWYLqE3occS7R"
-        }
-    }).done(function(data) {
-        // console.log(data[0]);
-        for (bus_stop in data){
-        //     console.log(data[bus_stop].stop_lat);
-
-            //TODO draw the markers here for all the bus stops
-            var marker = new google.maps.Marker({
-
-                position: {lat:parseFloat(data[bus_stop].stop_lat), lng: parseFloat(data[bus_stop].stop_lon)},
-                icon: "static/images/bus_stop.svg",
-                map: map
-            });
-            marker.tooltipContent = data[bus_stop].stop_code+ ": " + data[bus_stop].stop_name;
-
-            marker.addListener('mouseover', function() {
-                var point = fromLatLngToPoint(marker.getPosition(), map);
-                $('#marker-tooltip').html(marker.tooltipContent).css({
-                    'left': point.x,
-                    'top': point.y + 40
-                }).show();
-            });
-
-            marker.addListener('mouseout', function() {
-                $('#marker-tooltip').hide();
-            });
-        }
-    });
-}
-
 
 var styles = {
     default: null,
