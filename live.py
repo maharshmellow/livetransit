@@ -2,7 +2,7 @@ from google.transit import gtfs_realtime_pb2
 import requests
 import pickle
 import datetime
-
+import pytz
 
 def getLiveData():
     """gets the realtime locations of all the busses"""
@@ -80,9 +80,10 @@ def getTrip(request_trip_id):
                 if not time:
                     time = item.arrival.time
 
-                # format the time
-                time = datetime.datetime.fromtimestamp(
-                    int(time)).strftime("%H:%M")
+                # format the time - need to take into account the timezone because
+                # heroku runs from a different location so the times get messed up
+                timezone = pytz.timezone("Canada/Mountain")
+                time = datetime.datetime.fromtimestamp(int(time), timezone).strftime("%H:%M")
 
                 stop_id = item.stop_id
 
