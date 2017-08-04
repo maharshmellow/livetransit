@@ -37,4 +37,4 @@ def trip():
     return render_template("trip.html", bus_number=bus_number, bus_title=bus_title, data=response)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
