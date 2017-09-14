@@ -43,7 +43,7 @@ def getLiveData():
                             "trip_id": trip_number}
             # print(entity)
             transit_data[vehicle] = vehicle_data
-
+    
     return(transit_data)
 
 
