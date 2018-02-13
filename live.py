@@ -7,7 +7,7 @@ import pytz
 def getLiveData():
     """gets the realtime locations of all the busses"""
 
-    with open("data/routes.pickle", "rb") as handle:
+    with open("routes.pickle", "rb") as handle:
         routes = pickle.load(handle)
 
     live_data_url = "https://data.edmonton.ca/download/7qed-k2fc/application%2Foctet-stream"
