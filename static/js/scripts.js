@@ -128,7 +128,7 @@ function initMap() {
 
 function refreshMap() {
     $.ajax({
-        url: '/api/data',
+        url: '/data',
         success: function(response) {
             console.log(response);
             // clear the current markers

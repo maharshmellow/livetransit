@@ -1,14 +1,13 @@
-from google.transit import gtfs_realtime_pb2
 import requests
-import pickle
+import time
 import datetime
 import pytz
+from google.transit import gtfs_realtime_pb2
+from werkzeug.contrib.cache import SimpleCache
 
-def getLiveData():
-    """gets the realtime locations of all the busses"""
-
-    with open("routes.pickle", "rb") as handle:
-        routes = pickle.load(handle)
+def get_bus_location():
+    """get the live location of all the busses"""
+    routes = get_routes()
 
     live_data_url = "https://data.edmonton.ca/download/7qed-k2fc/application%2Foctet-stream"
 
@@ -27,6 +26,7 @@ def getLiveData():
 
             bus_number, bus_title = routes[trip_number]
             vehicle = entity.vehicle.vehicle.id
+            
             # the higher one seems to be correct - sometimes the vehicle id is too short
             if entity.vehicle.vehicle.label:
                 vehicle = max(int(entity.vehicle.vehicle.id),
@@ -41,30 +41,27 @@ def getLiveData():
                             "longitude": longitude,
                             "bearing": bearing,
                             "trip_id": trip_number}
-            # print(entity)
+
             transit_data[vehicle] = vehicle_data
     
     return(transit_data)
 
-
-def getTrip(request_trip_id):
+def get_trip(request_trip_id):
     """gets the trip of a particular bus"""
-
-    response = {}
 
     # gets when the bus is expected to come and to what stop
     live_stop_url = "https://data.edmonton.ca/download/uzpc-8bnm/application%2Foctet-stream"
     live_stop_feed = gtfs_realtime_pb2.FeedMessage()
     live_stop_response = requests.get(live_stop_url)
     if live_stop_response.status_code != 200:
-        return ("1")
+        return False
     live_stop_feed.ParseFromString(live_stop_response.content)
 
-    # gets the location of each bus stop
+    # gets the static location of each bus stop
     static_stop_url = "https://data.edmonton.ca/resource/kgzg-mxv6.json?$limit=10000"
     static_stop_response = requests.get(static_stop_url)
     if static_stop_response.status_code != 200:
-        return("1")
+        return False
     static_stop_data = static_stop_response.json()
 
     trip = {}
@@ -89,6 +86,7 @@ def getTrip(request_trip_id):
 
                 if stop_id and int(stop_id) < 0:
                     continue
+
                 # get the street address of the bus stop
                 address = "N/A"
                 for stop in static_stop_data:
@@ -100,3 +98,33 @@ def getTrip(request_trip_id):
                 trip[stop_sequence] = trip_item
 
     return trip
+
+
+def get_routes():
+    """get the bus headings, bus numbers, and also the trip ids"""
+    
+    print("getting routes")
+    trips_url = "https://data.edmonton.ca/api/views/ctwr-tvrd/rows.json?accessType=DOWNLOAD"
+    bus_heading_url = "https://data.edmonton.ca/resource/atvz-ppyb.json"
+
+    trips_response = requests.get(trips_url)
+    bus_heading_response = requests.get(bus_heading_url)
+
+    if trips_response.status_code == 200 and bus_heading_response.status_code == 200:
+        trips = trips_response.json()
+        headings = bus_heading_response.json()
+
+        bus_to_headings = {}
+        trip_to_bus = {}
+
+        for heading in headings:
+            bus_to_headings[heading["route_id"]] = heading["route_long_name"]
+
+        for item in trips["data"]:
+            trip_id = item[-4]
+            bus_number = item[-6]
+            bus_heading = bus_to_headings[bus_number]
+
+            trip_to_bus[trip_id] = [bus_number, bus_heading]
+
+        return trip_to_bus
