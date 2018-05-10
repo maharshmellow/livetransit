@@ -3,8 +3,8 @@ from flask import jsonify
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask import render_template
-from google.transit import gtfs_realtime_pb2
 from helpers import *
+from werkzeug.contrib.cache import SimpleCache
 
 app = Flask(__name__)
 limiter = Limiter(app, key_func=get_remote_address)
@@ -12,6 +12,7 @@ limiter = Limiter(app, key_func=get_remote_address)
 @app.route("/")
 @limiter.limit("200/hour")
 def index():
+    init_cache()
     return render_template("home.html")
 
 @app.route("/data", methods=["GET"])

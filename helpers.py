@@ -5,6 +5,8 @@ import pytz
 from google.transit import gtfs_realtime_pb2
 from werkzeug.contrib.cache import SimpleCache
 
+cache = SimpleCache()
+
 def get_bus_location():
     """get the live location of all the busses"""
     routes = get_routes()
@@ -99,10 +101,13 @@ def get_trip(request_trip_id):
 
     return trip
 
-
 def get_routes():
     """get the bus headings, bus numbers, and also the trip ids"""
-    
+    # get from cache if it exists
+    routes = cache.get("routes")
+    if routes:
+        return routes
+
     print("getting routes")
     trips_url = "https://data.edmonton.ca/api/views/ctwr-tvrd/rows.json?accessType=DOWNLOAD"
     bus_heading_url = "https://data.edmonton.ca/resource/atvz-ppyb.json"
@@ -126,5 +131,9 @@ def get_routes():
             bus_heading = bus_to_headings[bus_number]
 
             trip_to_bus[trip_id] = [bus_number, bus_heading]
-
+        
+        # store the routes in the cache for five minutes
+        cache.set("routes", trip_to_bus, timeout=5*60)        
         return trip_to_bus
+
+init_cache = get_routes     # alias for easy readibility
