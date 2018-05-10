@@ -130,7 +130,6 @@ function refreshMap() {
     $.ajax({
         url: '/data',
         success: function(response) {
-            console.log(response);
             // clear the current markers
             deleteMarkers();
 
