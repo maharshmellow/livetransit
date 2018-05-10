@@ -27,7 +27,6 @@ def get_bus_location():
             trip_number = entity.vehicle.trip.trip_id
             # sometimes the live bus trip ids don't show up in the routes database
             if trip_number not in routes:
-                # print(trip_number + " missing")
                 continue
 
             bus_number, bus_title = routes[trip_number]
@@ -123,7 +122,6 @@ def get_routes():
     if routes:
         return routes
 
-    print("getting routes")
     trips_url = "https://data.edmonton.ca/api/views/ctwr-tvrd/rows.json?accessType=DOWNLOAD"
     bus_heading_url = "https://data.edmonton.ca/resource/atvz-ppyb.json"
 

@@ -34,7 +34,6 @@
     var response = {{ data | tojson }};
 
     for (sequence_id in response) {
-        console.log(response[sequence_id]);
         var trip_item = "<div class='trip_item row'><div class='col-md-3'> #" + response[sequence_id].stop + "</div><div class='col-md-6' >" + response[sequence_id].address + "</div><div class='col-md-3'><span class='pull-right'>" + response[sequence_id].time + "</span></div></div>";
         $('#trip').append(trip_item);
 
