@@ -9,13 +9,17 @@ cache = SimpleCache()
 
 def get_bus_location():
     """get the live location of all the busses"""
+
+    transit_data = cache.get("transit_data")
+    if transit_data:
+        return transit_data
+    
     routes = get_routes()
 
     live_data_url = "https://data.edmonton.ca/download/7qed-k2fc/application%2Foctet-stream"
-
     feed = gtfs_realtime_pb2.FeedMessage()
-    response = requests.get(live_data_url)
-    feed.ParseFromString(response.content)
+    live_data_response = requests.get(live_data_url)
+    feed.ParseFromString(live_data_response.content)
 
     transit_data = {}       # contains the informtion for all the busses
     for entity in feed.entity:
@@ -46,6 +50,7 @@ def get_bus_location():
 
             transit_data[vehicle] = vehicle_data
     
+    cache.set("transit_data", transit_data, timeout=15)
     return(transit_data)
 
 def get_trip(request_trip_id):
@@ -54,14 +59,24 @@ def get_trip(request_trip_id):
     # gets when the bus is expected to come and to what stop
     live_stop_url = "https://data.edmonton.ca/download/uzpc-8bnm/application%2Foctet-stream"
     live_stop_feed = gtfs_realtime_pb2.FeedMessage()
-    live_stop_response = requests.get(live_stop_url)
+
+    live_stop_response = cache.get("live_stop_response")
+    if not live_stop_response:
+        live_stop_response = requests.get(live_stop_url)
+        cache.set("live_stop_response", live_stop_response, timeout=60)
+
     if live_stop_response.status_code != 200:
         return False
     live_stop_feed.ParseFromString(live_stop_response.content)
 
     # gets the static location of each bus stop
     static_stop_url = "https://data.edmonton.ca/resource/kgzg-mxv6.json?$limit=10000"
-    static_stop_response = requests.get(static_stop_url)
+
+    static_stop_response = cache.get("static_stop_response")
+    if not static_stop_response:
+        static_stop_response = requests.get(static_stop_url)
+        cache.set("static_stop_response", static_stop_response, timeout=10*60)
+
     if static_stop_response.status_code != 200:
         return False
     static_stop_data = static_stop_response.json()
@@ -136,4 +151,4 @@ def get_routes():
         cache.set("routes", trip_to_bus, timeout=5*60)        
         return trip_to_bus
 
-init_cache = get_routes     # alias for easy readibility
+init_cache = get_routes

@@ -10,19 +10,20 @@ app = Flask(__name__)
 limiter = Limiter(app, key_func=get_remote_address)
 
 @app.route("/")
-@limiter.limit("200/hour")
+@limiter.limit("300/hour")
 def index():
+    # set up the routes in the cache if not already done before displaying page
     init_cache()
     return render_template("home.html")
 
 @app.route("/data", methods=["GET"])
-@limiter.limit("200/hour")
-def data():
+@limiter.limit("300/hour")
+def live_data():
     response = jsonify(get_bus_location())
     return response
 
 @app.route("/trip")
-@limiter.limit("200/hour")
+@limiter.limit("300/hour")
 def trip():
     trip_id = request.args.get("id")
     bus_number = request.args.get("bus")
