@@ -177,7 +177,7 @@ function deleteMarkers() {
 }
 // Generates an SVG icon for each bus based on the bus number
 function getIcon(bus_number) {
-    var icon = 'data:image/svg+xml;utf-8,<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs></defs><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="Artboard-3"><circle id="Oval-2" fill="#6F06FB" cx="11" cy="11" r="11"></circle><text font-family="monospace" font-size="11" font-style="bold" letter-spacing="-0.910000026" fill="#FFFFFF"><tspan x="11" y="15" text-anchor="middle">' + bus_number + '</tspan></text></g></g></svg>';
+    var icon = "data:image/svg+xml,%3Csvg width='22px' height='22px' viewBox='0 0 22 22' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='Artboard-3'%3E%3Ccircle id='Oval-2' fill='%236F06FB' cx='11' cy='11' r='11'%3E%3C/circle%3E%3Ctext font-family='monospace' font-size='11' font-style='bold' letter-spacing='-0.910000026' fill='%23FFFFFF'%3E%3Ctspan x='11' y='15' text-anchor='middle'%3E"+ bus_number +"%3C/tspan%3E%3C/text%3E%3C/g%3E%3C/g%3E%3C/svg%3E";
 
     return icon;
 }
