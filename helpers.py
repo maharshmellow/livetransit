@@ -135,7 +135,6 @@ def get_routes():
         bus_to_headings = {}
         trip_to_bus = {}
 
-        print(headings)
         for heading in headings:
             if ("route_long_name" in heading):
                 bus_to_headings[heading["route_id"]] = heading["route_long_name"]
