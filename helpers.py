@@ -136,15 +136,15 @@ def get_routes():
         trip_to_bus = {}
 
         for heading in headings:
-            if ("route_long_name" in heading):
+            if "route_long_name" in heading:
                 bus_to_headings[heading["route_id"]] = heading["route_long_name"]
 
         for item in trips["data"]:
             trip_id = item[-4]
             bus_number = item[-6]
-            bus_heading = bus_to_headings[bus_number]
-
-            trip_to_bus[trip_id] = [bus_number, bus_heading]
+            if bus_number in bus_to_headings:
+                bus_heading = bus_to_headings[bus_number]
+                trip_to_bus[trip_id] = [bus_number, bus_heading]
         
         # store the routes in the cache for five minutes
         cache.set("routes", trip_to_bus, timeout=5*60)        
