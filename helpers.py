@@ -135,8 +135,10 @@ def get_routes():
         bus_to_headings = {}
         trip_to_bus = {}
 
+        print(headings)
         for heading in headings:
-            bus_to_headings[heading["route_id"]] = heading["route_long_name"]
+            if ("route_long_name" in heading):
+                bus_to_headings[heading["route_id"]] = heading["route_long_name"]
 
         for item in trips["data"]:
             trip_id = item[-4]
