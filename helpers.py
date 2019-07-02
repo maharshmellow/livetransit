@@ -16,7 +16,7 @@ def get_bus_location():
     
     routes = get_routes()
 
-    live_data_url = "https://data.edmonton.ca/download/7qed-k2fc/application%2Foctet-stream"
+    live_data_url = "http://gtfs.edmonton.ca/TMGTFSRealTimeWebService/Vehicle/VehiclePositions.pb"
     feed = gtfs_realtime_pb2.FeedMessage()
     live_data_response = requests.get(live_data_url)
     feed.ParseFromString(live_data_response.content)
@@ -56,7 +56,7 @@ def get_trip(request_trip_id):
     """gets the trip of a particular bus"""
 
     # gets when the bus is expected to come and to what stop
-    live_stop_url = "https://data.edmonton.ca/download/uzpc-8bnm/application%2Foctet-stream"
+    live_stop_url = "http://gtfs.edmonton.ca/TMGTFSRealTimeWebService/TripUpdate/TripUpdates.pb"
     live_stop_feed = gtfs_realtime_pb2.FeedMessage()
 
     live_stop_response = cache.get("live_stop_response")
